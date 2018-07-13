@@ -67,8 +67,8 @@
         <p id="activitiest">Activities:</p>
         <div id="activitiesb">
             {% for i in request.session.activities %}
-                <p>
-                    {{ i }}
+                <p style="color:{{ i.color }};">
+                    {{ i.output }}
                 </p>
             {% endfor %}
         </div>

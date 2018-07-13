@@ -16,32 +16,42 @@ def process(request):
     datetime=strftime("%Y/%m/%d %#I:%M %p", localtime())
     if request.POST['building'] == "farm":
         x= random.randrange(10,21)
-        request.session['ninja_gold'] += x
-        request.session['values'].insert(0,int(x))
-        y="Earned "+str(x)+" golds from the farm! ("+str(datetime)+")"
-        request.session['activities'].insert(0,y)
+        y={
+            "output" : "Earned "+str(x)+" golds from the farm! ("+str(datetime)+")",
+            "color" : "green"
+        }
     elif request.POST['building'] == "cave":
         x=random.randrange(5,11)
-        request.session['ninja_gold'] += x
-        request.session['values'].insert(0,int(x))
-        y="Earned "+str(x)+" golds from the cave! ("+str(datetime)+")"
-        request.session['activities'].insert(0,y)
+        y={
+            "output" : "Earned "+str(x)+" golds from the cave! ("+str(datetime)+")",
+            "color" : "green"
+        }
     elif request.POST['building'] == "house":
         x=random.randrange(2,6)
-        request.session['ninja_gold'] += x
-        request.session['values'].insert(0,int(x))
-        y="Earned "+str(x)+" golds from the house! ("+str(datetime)+")"
-        request.session['activities'].insert(0,y)
+        y={
+            "output" : "Earned "+str(x)+" golds from the house! ("+str(datetime)+")",
+            "color" : "green"
+        }
     elif request.POST['building'] == "casino":
         x=random.randrange(-50,51)
-        request.session['ninja_gold'] += x
-        request.session['values'].insert(0,int(x))
-        if x>=0:
-            y="Earned "+str(x)+" golds from the casino! ("+str(datetime)+")"
-            request.session['activities'].insert(0,y)
+        if x>0:
+            y={
+                "output" : "Entered a casino and won "+str(x)+" golds!!! Woohoo!!! ("+str(datetime)+")",
+                "color" : "green"
+            }
+        elif x == 0:
+            y={
+                "output" : "Entered a casino and broke even. Eh. ("+str(datetime)+")",
+                "color" : "black"
+            }
         else:
-            y="Entered a casino and lost "+str(int(math.fabs(x)))+" golds... Ouch... ("+str(datetime)+")"
-            request.session['activities'].insert(0,y)
+            y={
+                "output" : "Entered a casino and lost "+str(int(math.fabs(x)))+" golds... Ouch... ("+str(datetime)+")",
+                "color" : "red"
+            }
+    request.session['ninja_gold'] += x
+    request.session['activities'].insert(0,y)
+    print(request.session['activities'])
     return redirect('/')
 
 def reset(request):
